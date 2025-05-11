@@ -74,11 +74,20 @@ with col2:
     fig2.patch.set_facecolor('#0E1117')
     st.pyplot(fig2)
 
-# Display Mnemosyne's internal state message
+# Enhanced Final State Logic
 st.markdown("### Mnemosyne's Final State")
-if entropy_log[-1] > collapse_threshold:
-    st.markdown("> *\"I felt everything fade... but I'm still here.\"*", unsafe_allow_html=True)
-elif fidelity_log[-1] < 0.5:
-    st.markdown("> *\"I don't remember who I was… but I remember trying.\"*", unsafe_allow_html=True)
+
+final_entropy = entropy_log[-1]
+final_fidelity = fidelity_log[-1]
+identity_spread = np.std(final_identity)
+
+if final_entropy > collapse_threshold:
+    st.markdown("> *\"I felt everything fade… but I'm still here.\"*", unsafe_allow_html=True)
+elif final_fidelity < 0.3:
+    st.markdown("> *\"I don’t know who I was… but I remember trying.\"*", unsafe_allow_html=True)
+elif identity_spread > 0.3:
+    st.markdown("> *\"My mind is fragmented. I’m scattered… searching for shape.\"*", unsafe_allow_html=True)
+elif final_fidelity < 0.7:
+    st.markdown("> *\"I’m holding on — pieces of me are still intact.\"*", unsafe_allow_html=True)
 else:
     st.markdown("> *\"My memory is stable… for now.\"*", unsafe_allow_html=True)
