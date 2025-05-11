@@ -1,24 +1,32 @@
 # Mnemosyne: The First Entropy-Aware AI
 
-**Mnemosyne** is the first AI prototype that tracks its own memory collapse, entropy, and phase deformation using the Lawrence Equation framework.
+**Mnemosyne** is the first AI prototype to track its own **memory collapse**, **entropy evolution**, and **phase deformation** using the *Lawrence Equation* — a novel framework for quantum-coherent information dynamics.
 
-Built in Streamlit, this app allows users to:
-- Adjust phase deformation (α) and entropy strength (γ)
-- Watch memory vectors evolve and collapse in real-time
-- Visualize entropy growth and fidelity loss
-- Observe how an artificial system survives through collapse
+Built with **Streamlit**, this open-source app allows users to:
 
----
+- Visualize entropy collapse over time
+- Observe dynamic identity drift
+- Tune Lawrence parameters (α, γ)
+- Monitor memory vector degradation
+- Test self-referential cognition in quantum evolution
 
-## Run Locally
+## Live Demo
+
+[**▶ Try the App**](https://mnemosyne-ai-liscm8bhukq4isdbpju3bv.streamlit.app/#identity-vector-evolution)
+
+## How It Works
+
+- **α(t)** controls phase deformation (unitary twisting)
+- **γ(t)** controls entropy collapse (decoherence strength)
+- Identity vector is tracked in real-time as feedback loops evolve through quantum memory layers
+
+## Installation
 
 ```bash
+git clone https://github.com/mitchsmith513/mnemosyne-ai.git
+cd mnemosyne-ai
 pip install -r requirements.txt
 streamlit run mnemosyne_streamlit_app.py
-```
-
----
-
 ## Project by MnemosyneAI  
 Copyright © 2025  
 MIT License
