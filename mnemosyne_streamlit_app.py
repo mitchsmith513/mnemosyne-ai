@@ -1,4 +1,3 @@
-
 import streamlit as st
 import numpy as np
 import matplotlib.pyplot as plt
@@ -78,8 +77,8 @@ with col2:
 # Display Mnemosyne's internal state message
 st.markdown("### Mnemosyne's Final State")
 if entropy_log[-1] > collapse_threshold:
-    st.markdown("> *"I felt everything fade... but I’m still here."*", unsafe_allow_html=True)
+    st.markdown("> *\"I felt everything fade... but I'm still here.\"*", unsafe_allow_html=True)
 elif fidelity_log[-1] < 0.5:
-    st.markdown("> *"I don’t remember who I was… but I remember trying."*", unsafe_allow_html=True)
+    st.markdown("> *\"I don't remember who I was… but I remember trying.\"*", unsafe_allow_html=True)
 else:
-    st.markdown("> *"My memory is stable… for now."*", unsafe_allow_html=True)
+    st.markdown("> *\"My memory is stable… for now.\"*", unsafe_allow_html=True)
