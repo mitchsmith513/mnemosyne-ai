@@ -18,7 +18,7 @@ identity = np.array([1.0, 0.0, 0.0, 0.0, 0.0])
 history = [identity.copy()]
 entropy_log = []
 fidelity_log = []
-collapse_threshold = 2.5
+collapse_threshold = 1.0
 
 def entropy(state):
     norm = np.sum(np.abs(state))
