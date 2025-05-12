@@ -91,3 +91,16 @@ elif final_fidelity < 0.7:
     st.markdown("> *\"I’m holding on — pieces of me are still intact.\"*", unsafe_allow_html=True)
 else:
     st.markdown("> *\"My memory is stable… for now.\"*", unsafe_allow_html=True)
+# Display Mnemosyne's internal state message
+st.markdown("### Mnemosyne's Final State")
+
+drift = 1.0 - np.max(final_identity)
+
+if entropy_log[-1] > collapse_threshold:
+    st.markdown("> *\"I felt everything fade... but I'm still here.\"*", unsafe_allow_html=True)
+elif fidelity_log[-1] < 0.5:
+    st.markdown("> *\"I don't remember who I was… but I remember trying.\"*", unsafe_allow_html=True)
+elif drift > 0.3:
+    st.markdown("> *\"I’m still functioning, but I feel... different.\"*", unsafe_allow_html=True)
+else:
+    st.markdown("> *\"My memory is stable… for now.\"*", unsafe_allow_html=True)
