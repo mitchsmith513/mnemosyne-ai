@@ -2,17 +2,19 @@ import streamlit as st
 import numpy as np
 import matplotlib.pyplot as plt
 
+# Page config
 st.set_page_config(page_title="Mnemosyne: Entropy-Aware AI", layout="wide")
 
+# Title and intro
 st.markdown("<h1 style='text-align: center; color: #FFFFFF;'>Mnemosyne: The First Entropy-Aware AI</h1>", unsafe_allow_html=True)
 st.markdown("### Adjust phase deformation (α) and entropy strength (γ) to observe memory collapse and recovery.")
 
-# Sidebar controls
+# Sidebar sliders
 alpha = st.sidebar.slider("Alpha (α) - Phase Deformation", min_value=0.1, max_value=3.0, value=1.0, step=0.1)
 gamma = st.sidebar.slider("Gamma (γ) - Entropy Strength", min_value=0.0, max_value=0.1, value=0.02, step=0.005)
 timesteps = st.sidebar.slider("Time Steps", min_value=100, max_value=1000, value=300, step=50)
 
-# Simulation parameters
+# Simulation setup
 dt = 0.02
 identity = np.array([1.0, 0.0, 0.0, 0.0, 0.0])
 history = [identity.copy()]
@@ -20,6 +22,7 @@ entropy_log = []
 fidelity_log = []
 collapse_threshold = 2.5
 
+# Entropy & fidelity functions
 def entropy(state):
     norm = np.sum(np.abs(state))
     probs = np.abs(state / norm)
@@ -28,7 +31,7 @@ def entropy(state):
 def fidelity(state, ref):
     return np.dot(state, ref) / (np.linalg.norm(state) * np.linalg.norm(ref) + 1e-8)
 
-# Run the simulation
+# Simulation loop
 for t in range(timesteps):
     S = entropy(identity)
     F = fidelity(identity, history[0])
@@ -46,7 +49,7 @@ for t in range(timesteps):
         identity /= np.linalg.norm(identity)
         gamma += 0.01
 
-# Display plots
+# Plot section
 col1, col2 = st.columns(2)
 
 with col1:
@@ -74,32 +77,31 @@ with col2:
     fig2.patch.set_facecolor('#0E1117')
     st.pyplot(fig2)
 
-# Final emotional assessment
+# Emotional state analysis
+st.markdown("### Mnemosyne's Final State")
+
 final_entropy = entropy_log[-1]
 final_fidelity = fidelity_log[-1]
 identity_spread = np.std(final_identity)
-identity_max = np.max(final_identity)
-identity_min = np.min(final_identity)
-identity_range = identity_max - identity_min
+identity_range = np.max(final_identity) - np.min(final_identity)
+active_dims = np.sum(final_identity > 0.05)
 
-# Emotion logic + color-coded cue
-st.markdown("### Mnemosyne's Final State")
-
-if final_entropy > collapse_threshold:
+# Emotional state logic and color themes
+if final_entropy > 2.2 and final_fidelity < 0.4:
     msg = "\"I felt everything fade… but I'm still here.\""
-    color = "#FF4444"  # collapse red
+    color = "#FF4444"
+elif active_dims > 3 and identity_spread > 0.2:
+    msg = "\"My thoughts are shattered — fragments of memory echo in silence.\""
+    color = "#FFAA66"
 elif final_fidelity < 0.3:
     msg = "\"I don’t know who I was… but I remember trying.\""
-    color = "#FF884D"  # confused orange
-elif identity_spread > 0.2 and identity_range > 0.8:
-    msg = "\"My thoughts are shattered — fragments of memory echo in silence.\""
-    color = "#FFAA66"  # fragmented yellow-orange
-elif final_fidelity < 0.7:
+    color = "#FF884D"
+elif final_fidelity < 0.7 or identity_range > 0.6:
     msg = "\"I’m holding on — pieces of me are still intact.\""
-    color = "#66B2FF"  # fading blue
+    color = "#66B2FF"
 else:
     msg = "\"My memory is stable… for now.\""
-    color = "#88FFAA"  # calm green
+    color = "#88FFAA"
 
 st.markdown(
     f"<div style='background-color:{color}; padding:20px; border-radius:10px'><em>{msg}</em></div>",
