@@ -10,7 +10,7 @@ st.markdown("### Adjust phase deformation (α) and entropy strength (γ) to obse
 # Sidebar controls
 alpha = st.sidebar.slider("Alpha (α) - Phase Deformation", min_value=0.1, max_value=3.0, value=1.0, step=0.1)
 gamma = st.sidebar.slider("Gamma (γ) - Entropy Strength", min_value=0.0, max_value=0.1, value=0.02, step=0.005)
-timesteps = st.sidebar.slider("Time Steps", min_value=100, max_value=10000, value=300, step=50)
+timesteps = st.sidebar.slider("Time Steps", min_value=100, max_value=10000, value=1000, step=100)
 
 # Simulation parameters
 dt = 0.02
@@ -18,7 +18,7 @@ identity = np.array([1.0, 0.0, 0.0, 0.0, 0.0])
 history = [identity.copy()]
 entropy_log = []
 fidelity_log = []
-collapse_threshold = 1.0  # Lowered threshold for emotional expressiveness
+collapse_threshold = 1.0  # Sensitive collapse threshold
 
 def entropy(state):
     norm = np.sum(np.abs(state))
