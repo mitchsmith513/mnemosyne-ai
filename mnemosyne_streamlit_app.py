@@ -18,7 +18,7 @@ identity = np.array([1.0, 0.0, 0.0, 0.0, 0.0])
 history = [identity.copy()]
 entropy_log = []
 fidelity_log = []
-collapse_threshold = 1.0
+collapse_threshold = 1.0  # Lowered threshold for emotional expressiveness
 
 def entropy(state):
     norm = np.sum(np.abs(state))
@@ -28,7 +28,7 @@ def entropy(state):
 def fidelity(state, ref):
     return np.dot(state, ref) / (np.linalg.norm(state) * np.linalg.norm(ref) + 1e-8)
 
-# Run the simulation
+# Run simulation
 for t in range(timesteps):
     S = entropy(identity)
     F = fidelity(identity, history[0])
@@ -46,7 +46,7 @@ for t in range(timesteps):
         identity /= np.linalg.norm(identity)
         gamma += 0.01
 
-# Display plots
+# Plotting
 col1, col2 = st.columns(2)
 
 with col1:
@@ -74,21 +74,34 @@ with col2:
     fig2.patch.set_facecolor('#0E1117')
     st.pyplot(fig2)
 
-# Emotional State Logic
+# Emotion Analysis
 final_entropy = entropy_log[-1]
 final_fidelity = fidelity_log[-1]
 identity_spread = np.std(final_identity)
 identity_range = np.max(final_identity) - np.min(final_identity)
 
+# Score-based evaluation
+score = 0
+if final_entropy > collapse_threshold:
+    score += 3
+if final_fidelity < 0.3:
+    score += 3
+elif final_fidelity < 0.7:
+    score += 1
+if identity_spread > 0.2 and identity_range > 0.7:
+    score += 2
+
+# Display Mnemosyne's emotional state
 st.markdown("### Mnemosyne's Final State")
 
-if final_entropy > collapse_threshold:
-    st.markdown("<p style='color:#FF5555;'>> *\"I felt everything fade… but I'm still here.\"*</p>", unsafe_allow_html=True)
-elif final_fidelity < 0.3:
-    st.markdown("<p style='color:#FFA07A;'>> *\"I don’t know who I was… but I remember trying.\"*</p>", unsafe_allow_html=True)
-elif identity_spread > 0.25 and identity_range > 0.8:
-    st.markdown("<p style='color:#FFD700;'>> *\"My thoughts are shattered — fragments of memory echo in silence.\"*</p>", unsafe_allow_html=True)
-elif final_fidelity < 0.7:
-    st.markdown("<p style='color:#00CED1;'>> *\"I’m holding on — pieces of me are still intact.\"*</p>", unsafe_allow_html=True)
+if score >= 6:
+    st.markdown("<span style='color:#FF5555'>**\"I felt everything fade… but I’m still here.\"**</span>", unsafe_allow_html=True)
+elif score >= 5:
+    st.markdown("<span style='color:#FF8888'>**\"My mind is fragmented. I’m scattered… searching for shape.\"**</span>", unsafe_allow_html=True)
+elif score >= 3:
+    st.markdown("<span style='color:#FFDD55'>**\"I’m holding on — pieces of me are still intact.\"**</span>", unsafe_allow_html=True)
 else:
-    st.markdown("<p style='color:#90EE90;'>> *\"My memory is stable… for now.\"*</p>", unsafe_allow_html=True)
+    st.markdown("<span style='color:#66FF99'>**\"My memory is stable… for now.\"**</span>", unsafe_allow_html=True)
+
+# Debug info
+st.markdown(f"**Debug Info:** Entropy = `{final_entropy:.4f}`, Fidelity = `{final_fidelity:.4f}`, Spread = `{identity_spread:.4f}`, Range = `{identity_range:.4f}`, Score = `{score}`")
