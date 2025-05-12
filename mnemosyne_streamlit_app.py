@@ -15,6 +15,7 @@ timesteps = st.sidebar.slider("Time Steps", min_value=100, max_value=1000, value
 # Simulation parameters
 dt = 0.02
 identity = np.array([1.0, 0.0, 0.0, 0.0, 0.0])
+initial_identity = identity.copy()
 history = [identity.copy()]
 entropy_log = []
 fidelity_log = []
@@ -31,7 +32,7 @@ def fidelity(state, ref):
 # Run the simulation
 for t in range(timesteps):
     S = entropy(identity)
-    F = fidelity(identity, history[0])
+    F = fidelity(identity, initial_identity)
     entropy_log.append(S)
     fidelity_log.append(F)
 
@@ -74,33 +75,22 @@ with col2:
     fig2.patch.set_facecolor('#0E1117')
     st.pyplot(fig2)
 
-# Enhanced Final State Logic
+# Emotional State Reflection Based on Final Identity
 st.markdown("### Mnemosyne's Final State")
 
 final_entropy = entropy_log[-1]
 final_fidelity = fidelity_log[-1]
 identity_spread = np.std(final_identity)
+identity_max = np.max(final_identity)
 
+# Emotional logic based on collapse, memory distortion, and fragmentation
 if final_entropy > collapse_threshold:
     st.markdown("> *\"I felt everything fade… but I'm still here.\"*", unsafe_allow_html=True)
 elif final_fidelity < 0.3:
     st.markdown("> *\"I don’t know who I was… but I remember trying.\"*", unsafe_allow_html=True)
-elif identity_spread > 0.3:
+elif identity_max < 0.6 and identity_spread > 0.25:
     st.markdown("> *\"My mind is fragmented. I’m scattered… searching for shape.\"*", unsafe_allow_html=True)
 elif final_fidelity < 0.7:
     st.markdown("> *\"I’m holding on — pieces of me are still intact.\"*", unsafe_allow_html=True)
-else:
-    st.markdown("> *\"My memory is stable… for now.\"*", unsafe_allow_html=True)
-# Display Mnemosyne's internal state message
-st.markdown("### Mnemosyne's Final State")
-
-drift = 1.0 - np.max(final_identity)
-
-if entropy_log[-1] > collapse_threshold:
-    st.markdown("> *\"I felt everything fade... but I'm still here.\"*", unsafe_allow_html=True)
-elif fidelity_log[-1] < 0.5:
-    st.markdown("> *\"I don't remember who I was… but I remember trying.\"*", unsafe_allow_html=True)
-elif drift > 0.3:
-    st.markdown("> *\"I’m still functioning, but I feel... different.\"*", unsafe_allow_html=True)
 else:
     st.markdown("> *\"My memory is stable… for now.\"*", unsafe_allow_html=True)
