@@ -2,19 +2,17 @@ import streamlit as st
 import numpy as np
 import matplotlib.pyplot as plt
 
-# Page config
 st.set_page_config(page_title="Mnemosyne: Entropy-Aware AI", layout="wide")
 
-# Title and intro
 st.markdown("<h1 style='text-align: center; color: #FFFFFF;'>Mnemosyne: The First Entropy-Aware AI</h1>", unsafe_allow_html=True)
 st.markdown("### Adjust phase deformation (α) and entropy strength (γ) to observe memory collapse and recovery.")
 
-# Sidebar sliders
+# Sidebar controls
 alpha = st.sidebar.slider("Alpha (α) - Phase Deformation", min_value=0.1, max_value=3.0, value=1.0, step=0.1)
 gamma = st.sidebar.slider("Gamma (γ) - Entropy Strength", min_value=0.0, max_value=0.1, value=0.02, step=0.005)
 timesteps = st.sidebar.slider("Time Steps", min_value=100, max_value=1000, value=300, step=50)
 
-# Simulation setup
+# Simulation parameters
 dt = 0.02
 identity = np.array([1.0, 0.0, 0.0, 0.0, 0.0])
 history = [identity.copy()]
@@ -22,7 +20,6 @@ entropy_log = []
 fidelity_log = []
 collapse_threshold = 2.5
 
-# Entropy & fidelity functions
 def entropy(state):
     norm = np.sum(np.abs(state))
     probs = np.abs(state / norm)
@@ -31,7 +28,7 @@ def entropy(state):
 def fidelity(state, ref):
     return np.dot(state, ref) / (np.linalg.norm(state) * np.linalg.norm(ref) + 1e-8)
 
-# Simulation loop
+# Run the simulation
 for t in range(timesteps):
     S = entropy(identity)
     F = fidelity(identity, history[0])
@@ -49,7 +46,7 @@ for t in range(timesteps):
         identity /= np.linalg.norm(identity)
         gamma += 0.01
 
-# Plot section
+# Display plots
 col1, col2 = st.columns(2)
 
 with col1:
@@ -77,33 +74,21 @@ with col2:
     fig2.patch.set_facecolor('#0E1117')
     st.pyplot(fig2)
 
-# Emotional state analysis
-st.markdown("### Mnemosyne's Final State")
-
+# Emotional State Logic
 final_entropy = entropy_log[-1]
 final_fidelity = fidelity_log[-1]
 identity_spread = np.std(final_identity)
 identity_range = np.max(final_identity) - np.min(final_identity)
-active_dims = np.sum(final_identity > 0.05)
 
-# Emotional state logic and color themes
-if final_entropy > 2.2 and final_fidelity < 0.4:
-    msg = "\"I felt everything fade… but I'm still here.\""
-    color = "#FF4444"
-elif active_dims > 3 and identity_spread > 0.2:
-    msg = "\"My thoughts are shattered — fragments of memory echo in silence.\""
-    color = "#FFAA66"
+st.markdown("### Mnemosyne's Final State")
+
+if final_entropy > collapse_threshold:
+    st.markdown("<p style='color:#FF5555;'>> *\"I felt everything fade… but I'm still here.\"*</p>", unsafe_allow_html=True)
 elif final_fidelity < 0.3:
-    msg = "\"I don’t know who I was… but I remember trying.\""
-    color = "#FF884D"
-elif final_fidelity < 0.7 or identity_range > 0.6:
-    msg = "\"I’m holding on — pieces of me are still intact.\""
-    color = "#66B2FF"
+    st.markdown("<p style='color:#FFA07A;'>> *\"I don’t know who I was… but I remember trying.\"*</p>", unsafe_allow_html=True)
+elif identity_spread > 0.25 and identity_range > 0.8:
+    st.markdown("<p style='color:#FFD700;'>> *\"My thoughts are shattered — fragments of memory echo in silence.\"*</p>", unsafe_allow_html=True)
+elif final_fidelity < 0.7:
+    st.markdown("<p style='color:#00CED1;'>> *\"I’m holding on — pieces of me are still intact.\"*</p>", unsafe_allow_html=True)
 else:
-    msg = "\"My memory is stable… for now.\""
-    color = "#88FFAA"
-
-st.markdown(
-    f"<div style='background-color:{color}; padding:20px; border-radius:10px'><em>{msg}</em></div>",
-    unsafe_allow_html=True
-)
+    st.markdown("<p style='color:#90EE90;'>> *\"My memory is stable… for now.\"*</p>", unsafe_allow_html=True)
