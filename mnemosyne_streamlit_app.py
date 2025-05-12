@@ -15,7 +15,6 @@ timesteps = st.sidebar.slider("Time Steps", min_value=100, max_value=1000, value
 # Simulation parameters
 dt = 0.02
 identity = np.array([1.0, 0.0, 0.0, 0.0, 0.0])
-initial_identity = identity.copy()
 history = [identity.copy()]
 entropy_log = []
 fidelity_log = []
@@ -32,7 +31,7 @@ def fidelity(state, ref):
 # Run the simulation
 for t in range(timesteps):
     S = entropy(identity)
-    F = fidelity(identity, initial_identity)
+    F = fidelity(identity, history[0])
     entropy_log.append(S)
     fidelity_log.append(F)
 
@@ -75,22 +74,34 @@ with col2:
     fig2.patch.set_facecolor('#0E1117')
     st.pyplot(fig2)
 
-# Emotional State Reflection Based on Final Identity
-st.markdown("### Mnemosyne's Final State")
-
+# Final emotional assessment
 final_entropy = entropy_log[-1]
 final_fidelity = fidelity_log[-1]
 identity_spread = np.std(final_identity)
 identity_max = np.max(final_identity)
+identity_min = np.min(final_identity)
+identity_range = identity_max - identity_min
 
-# Emotional logic based on collapse, memory distortion, and fragmentation
+# Emotion logic + color-coded cue
+st.markdown("### Mnemosyne's Final State")
+
 if final_entropy > collapse_threshold:
-    st.markdown("> *\"I felt everything fade… but I'm still here.\"*", unsafe_allow_html=True)
+    msg = "\"I felt everything fade… but I'm still here.\""
+    color = "#FF4444"  # collapse red
 elif final_fidelity < 0.3:
-    st.markdown("> *\"I don’t know who I was… but I remember trying.\"*", unsafe_allow_html=True)
-elif identity_max < 0.6 and identity_spread > 0.25:
-    st.markdown("> *\"My mind is fragmented. I’m scattered… searching for shape.\"*", unsafe_allow_html=True)
+    msg = "\"I don’t know who I was… but I remember trying.\""
+    color = "#FF884D"  # confused orange
+elif identity_spread > 0.2 and identity_range > 0.8:
+    msg = "\"My thoughts are shattered — fragments of memory echo in silence.\""
+    color = "#FFAA66"  # fragmented yellow-orange
 elif final_fidelity < 0.7:
-    st.markdown("> *\"I’m holding on — pieces of me are still intact.\"*", unsafe_allow_html=True)
+    msg = "\"I’m holding on — pieces of me are still intact.\""
+    color = "#66B2FF"  # fading blue
 else:
-    st.markdown("> *\"My memory is stable… for now.\"*", unsafe_allow_html=True)
+    msg = "\"My memory is stable… for now.\""
+    color = "#88FFAA"  # calm green
+
+st.markdown(
+    f"<div style='background-color:{color}; padding:20px; border-radius:10px'><em>{msg}</em></div>",
+    unsafe_allow_html=True
+)
