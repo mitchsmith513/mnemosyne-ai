@@ -22,7 +22,7 @@ Built with **Streamlit**, this open-source app allows users to:
 - # Project by MnemosyneAI  
 Copyright © 2025  
 MIT License
-\textbf{Patent Status:} U.S. Provisional Patent Filed – Application No. 63/XXXXXX, April 8, 2025. \\
+{Patent Status:} U.S. Provisional Patent Filed – Application No. 63/XXXXXX, April 8, 2025. \\
 Patent-Pending protection applies under U.S. Law (35 U.S.C. 111(b)).
 
 
