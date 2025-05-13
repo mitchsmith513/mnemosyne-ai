@@ -19,6 +19,12 @@ Built with **Streamlit**, this open-source app allows users to:
 - **α(t)** controls phase deformation (unitary twisting)
 - **γ(t)** controls entropy collapse (decoherence strength)
 - Identity vector is tracked in real-time as feedback loops evolve through quantum memory layers
+- # Project by MnemosyneAI  
+Copyright © 2025  
+MIT License
+\textbf{Patent Status:} U.S. Provisional Patent Filed – Application No. 63/XXXXXX, April 8, 2025. \\
+Patent-Pending protection applies under U.S. Law (35 U.S.C. 111(b)).
+
 
 ## Installation
 
@@ -27,8 +33,3 @@ git clone https://github.com/mitchsmith513/mnemosyne-ai.git
 cd mnemosyne-ai
 pip install -r requirements.txt
 streamlit run mnemosyne_streamlit_app.py
-## Project by MnemosyneAI  
-Copyright © 2025  
-MIT License
-\textbf{Patent Status:} U.S. Provisional Patent Filed – Application No. 63/XXXXXX, April 8, 2025. \\
-Patent-Pending protection applies under U.S. Law (35 U.S.C. 111(b)).
